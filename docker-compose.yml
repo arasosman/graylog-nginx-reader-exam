@@ -1,0 +1,74 @@
+services:
+  mongo:
+    image: mongo:4.2
+    container_name: mongo
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - graylog
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
+    container_name: elasticsearch
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=localhost
+      - network.host=0.0.0.0
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - graylog
+
+  graylog:
+    image: graylog/graylog:4.2
+    container_name: graylog
+    environment:
+      - GRAYLOG_PASSWORD_SECRET=aRSDZoI69ScEXRGEKa6Bp3Q2EVq5ztMKSctpXbzuRfWtm/MmTQe8bsaIUcBk4dGWnKAwZxxwtqsLqHoqWbCngPPo70OVVlUQcA38b/pcZyAqYHn4EO3Ch6ScuQvnM8S9
+      - GRAYLOG_ROOT_PASSWORD_SHA2=fb4e18a7169b4099b2db51563367a82ff574323f1e2b786a76c96c41690b59d8
+      - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
+    entrypoint: /usr/bin/tini -- wait-for-it elasticsearch:9200 -- /docker-entrypoint.sh
+    depends_on:
+      - mongo
+      - elasticsearch
+    ports:
+      - "9000:9000"
+      - "12201:12201/udp"
+    volumes:
+      - graylog_data:/usr/share/graylog/data
+    networks:
+      - graylog
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/logs:/var/log/nginx
+      - ./nginx/html:/usr/share/nginx/html
+    networks:
+      - graylog
+  fluent-bit:
+    image: fluent/fluent-bit:1.9
+    container_name: fluent-bit
+    volumes:
+      - ./fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+      - ./parsers.conf:/fluent-bit/etc/parsers.conf
+      - ./nginx/logs:/var/log/nginx
+    networks:
+      - graylog
+
+volumes:
+  mongo_data:
+  es_data:
+  graylog_data:
+
+networks:
+  graylog:
