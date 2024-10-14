@@ -11,7 +11,8 @@ The project works on docker.
 
 ## Setup
 Let's create the necessary passwords first.
-We will put these passwords in the .env file.
+We will put these passwords in the docker-compose file.
+
 
 ```
 # Generate a password secret

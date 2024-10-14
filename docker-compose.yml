@@ -31,8 +31,8 @@ services:
     image: graylog/graylog:4.2
     container_name: graylog
     environment:
-      - GRAYLOG_PASSWORD_SECRET=
-      - GRAYLOG_ROOT_PASSWORD_SHA2=
+      - GRAYLOG_PASSWORD_SECRET=tNDSH8TxcHCC1DCN+/YTqfIeS2+WAB5sOmxFGeWvNMI6CYXsNpGptaC9UpvHrJQ1hNOH3KmogHB0UdYZb4cPOSiQLXohBOJOVAKVe2CSXNPWlZhw17XAF5x4uaEVmIpu
+      - GRAYLOG_ROOT_PASSWORD_SHA2=3f129085b604601db88a920562082126028dddc5175adea6d262b276204b4542
       - GRAYLOG_HTTP_EXTERNAL_URI=http://127.0.0.1:9000/
     entrypoint: /usr/bin/tini -- wait-for-it elasticsearch:9200 -- /docker-entrypoint.sh
     depends_on:
