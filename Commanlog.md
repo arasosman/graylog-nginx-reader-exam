@@ -1,61 +1,50 @@
-# Ubuntu server command logs to graylog
+We are sending logs to Graylog using rsyslog.
 
-logları graylog'a rsyslog ile yapıyoruz.
-
-öncelikle rsyslog kurulumu yapalım.
+First, let's install rsyslog.
 
 ```
-
 apt-get update
 apt-get install rsyslog
-
 ```
 
-daha sonra rsyslog aktifleştirelim
+Then, let's enable rsyslog.
 
 ```
 systemctl enable rsyslog
 systemctl start rsyslog
-
 ```
 
-Graylog İçin rsyslog Yapılandırması
+Configuration of rsyslog for Graylog
 
 ```
 vi /etc/rsyslog.d/graylog.conf
 
-#alttaki bilgileri girelim.
+# Enter the following information.
 
-*.* @graylog.sunucu.adresi:5140
-
+*.* @graylog.server.address:5140
 ```
 
-daha sonra rsyslog restart ediyoruz
+Then, restart rsyslog.
 
 ```
-
 systemctl restart rsyslog
-
 ```
 
+## Graylog Settings
 
-## graylog ayarları
+Create an input for the port we specified above.
 
-yukarda belirttiğimiz port için bir input oluşturuyoruz
+The type will be Syslog UDP.
 
-tip olarak Syslog UDP olacak
-
-## Bash Komut Geçmişini Syslog'a Gönderme
+## Sending Bash Command History to Syslog
 
 ```
 nano ~/.bashrc
 
-# aşağıdaki kodu ekleyelim.
+# Add the following code.
 
 export PROMPT_COMMAND='history -a; history -n; echo "$(whoami)@$(hostname): $(history 1)" | logger -t bash -p user.info'
 
-
-# daha sonra yenilemek için
+# Then, to refresh
 source ~/.bashrc
-
 ```
