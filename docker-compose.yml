@@ -65,6 +65,7 @@ services:
     networks:
       - graylog
 
+
 volumes:
   mongo_data:
   es_data:
