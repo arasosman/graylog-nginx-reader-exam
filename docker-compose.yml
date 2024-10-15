@@ -41,6 +41,7 @@ services:
     ports:
       - "9000:9000"
       - "12201:12201/udp"
+      - "5140:5140/udp"
     volumes:
       - graylog_data:/usr/share/graylog/data
     networks:
