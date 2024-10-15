@@ -64,6 +64,7 @@ services:
       - ./parsers.conf:/fluent-bit/etc/parsers.conf
       - ./nginx/logs:/var/log/nginx
       - /var/log/fail2ban.log:/var/log/fail2ban.log
+      - ./scripts:/fluent-bit/etc/scripts
     networks:
       - graylog
 
