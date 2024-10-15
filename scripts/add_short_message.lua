@@ -7,7 +7,7 @@ function add_short_message(tag, timestamp, record)
     local message = record["message"] or ""
 
     -- short_message alanını oluştur
-    record["short_message"] = time .. " " .. level .. " " .. jail .. " " .. action .. " " .. message
+    record["short_message"] = time .. " " .. level .. " " .. jail .. " " .. action .. " " .. message .. " " .. ip
 
     -- Güncellenmiş kaydı geri döndür
     return 1, timestamp, record
