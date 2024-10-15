@@ -1,22 +1,24 @@
+# Send server log to graylog
+
 We are sending logs to Graylog using rsyslog.
 
 First, let's install rsyslog.
 
-```
+```bash
 apt-get update
 apt-get install rsyslog
 ```
 
 Then, let's enable rsyslog.
 
-```
+```bash
 systemctl enable rsyslog
 systemctl start rsyslog
 ```
 
 Configuration of rsyslog for Graylog
 
-```
+```bash
 vi /etc/rsyslog.d/graylog.conf
 
 # Enter the following information.
@@ -26,7 +28,7 @@ vi /etc/rsyslog.d/graylog.conf
 
 Then, restart rsyslog.
 
-```
+```bash
 systemctl restart rsyslog
 ```
 
@@ -38,7 +40,7 @@ The type will be Syslog UDP.
 
 ## Sending Bash Command History to Syslog
 
-```
+```bash
 nano ~/.bashrc
 
 # Add the following code.
