@@ -46,6 +46,35 @@ services:
       - graylog_data:/usr/share/graylog/data
     networks:
       - graylog
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/logs:/var/log/nginx
+      - ./nginx/html:/usr/share/nginx/html
+    networks:
+      - graylog
+  fluent-bit-nginx:
+    image: fluent/fluent-bit:1.9
+    container_name: fluent-bit-nginx
+    volumes:
+      - ./fluent-bit/conf/nginx.conf:/fluent-bit/etc/fluent-bit.conf
+      - ./fluent-bit/parser/parsers.conf:/fluent-bit/etc/parsers.conf
+      - ./nginx/logs:/var/log/nginx
+    networks:
+      - graylog
+  fluent-bit-fail2ban:
+    image: fluent/fluent-bit:1.9
+    container_name: fluent-bit-fail2ban
+    volumes:
+      - ./fluent-bit/conf/fail2ban.conf:/fluent-bit/etc/fluent-bit.conf
+      - ./fluent-bit/parser/parsers.conf:/fluent-bit/etc/parsers.conf
+      - /var/log/fail2ban.log:/var/log/fail2ban.log
+      - ./fluent-bit/scripts:/fluent-bit/etc/scripts
+    networks:
+      - graylog
 
 volumes:
   mongo_data:
