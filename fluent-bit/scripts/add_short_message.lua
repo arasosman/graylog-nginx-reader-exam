@@ -5,6 +5,7 @@ function add_short_message(tag, timestamp, record)
     local jail = record["jail"] or ""
     local action = record["action"] or ""
     local message = record["message"] or ""
+    local ip = record["ip"] or ""
 
     -- short_message alanını oluştur
     record["short_message"] = time .. " " .. level .. " " .. jail .. " " .. action .. " " .. message .. " " .. ip
