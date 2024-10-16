@@ -58,7 +58,7 @@ services:
       - graylog
   fluent-bit-nginx:
     image: fluent/fluent-bit:1.9
-    container_name: fluent-bit
+    container_name: fluent-bit-nginx
     volumes:
       - ./fluent-bit/conf/nginx.conf:/fluent-bit/etc/fluent-bit.conf
       - ./fluent-bit/parser/parsers.conf:/fluent-bit/etc/parsers.conf
@@ -67,7 +67,7 @@ services:
       - graylog
   fluent-bit-fail2ban:
     image: fluent/fluent-bit:1.9
-    container_name: fluent-bit
+    container_name: fluent-bit-fail2ban
     volumes:
       - ./fluent-bit/conf/fail2ban.conf:/fluent-bit/etc/fluent-bit.conf
       - ./fluent-bit/parser/parsers.conf:/fluent-bit/etc/parsers.conf
