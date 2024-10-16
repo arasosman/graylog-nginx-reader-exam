@@ -56,18 +56,25 @@ services:
       - ./nginx/html:/usr/share/nginx/html
     networks:
       - graylog
-  fluent-bit:
+  fluent-bit-nginx:
     image: fluent/fluent-bit:1.9
     container_name: fluent-bit
     volumes:
-      - ./fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
-      - ./parsers.conf:/fluent-bit/etc/parsers.conf
+      - ./fluent-bit/conf/nginx.conf:/fluent-bit/etc/fluent-bit.conf
+      - ./fluent-bit/parser/parsers.conf:/fluent-bit/etc/parsers.conf
       - ./nginx/logs:/var/log/nginx
-      - /var/log/fail2ban.log:/var/log/fail2ban.log
-      - ./scripts:/fluent-bit/etc/scripts
     networks:
       - graylog
-
+  fluent-bit-fail2ban:
+    image: fluent/fluent-bit:1.9
+    container_name: fluent-bit
+    volumes:
+      - ./fluent-bit/conf/fail2ban.conf:/fluent-bit/etc/fluent-bit.conf
+      - ./fluent-bit/parser/parsers.conf:/fluent-bit/etc/parsers.conf
+      - /var/log/fail2ban.log:/var/log/fail2ban.log
+      - ./fluent-bit/scripts:/fluent-bit/etc/scripts
+    networks:
+      - graylog
 
 volumes:
   mongo_data:
